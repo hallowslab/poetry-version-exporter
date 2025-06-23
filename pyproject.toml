@@ -1,0 +1,33 @@
+[project]
+name = "poetry-version-exporter"
+version = "0.1.0"
+description = ""
+authors = [
+    {name = "hallowslab",email = "hallows.tech.lab@gmail.com"}
+]
+readme = "README.md"
+requires-python = ">=3.11,<4.0"
+dependencies = [
+    "tomli (>=2.2.1,<3.0.0)",
+    "importlib-metadata (>=8.7.0,<9.0.0)"
+]
+
+[tool.poetry]
+packages = [{ include = "poetry_version_exporter", from = "src" }]
+
+[tool.poetry.scripts]
+poetry-version-exporter = "poetry_version_exporter.cli:main"
+
+[tool.taskipy.tasks]
+export-version = "poetry run poetry-version-exporter --output src/poetry_version_exporter/_version.py"
+format = "black ."
+check = "mypy --strict ."
+
+[tool.poetry.group.dev.dependencies]
+black = "^25.1.0"
+taskipy = "^1.14.1"
+mypy = "^1.16.1"
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
