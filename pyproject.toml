@@ -1,6 +1,6 @@
 [project]
 name = "poetry-version-exporter"
-version = "0.1.0"
+version = "0.1.1"
 description = ""
 authors = [
     {name = "hallowslab",email = "hallow.tech.lab@gmail.com"}
