@@ -47,7 +47,7 @@ jobs:
           pipx install poetry
       - name: Install dependencies # This allows package metadata access
         run: |
-          pipx install poetry
+          poetry install
       - name: Update version
         run: |
           poetry run poetry-version-exporter --output src/poetry_version_exporter/_version.py
