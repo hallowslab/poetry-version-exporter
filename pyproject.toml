@@ -22,11 +22,16 @@ poetry-version-exporter = "poetry_version_exporter.cli:main"
 export-version = "poetry run poetry-version-exporter --output src/poetry_version_exporter/_version.py"
 format = "black ."
 check = "mypy --strict ."
+test = "pytest"
+post_test = "task format"
+cov = "pytest --cov=poetry_version_exporter --cov-report=term --cov-report=html"
 
 [tool.poetry.group.dev.dependencies]
 black = "^25.1.0"
 taskipy = "^1.14.1"
 mypy = "^1.16.1"
+pytest = "^8.4.1"
+pytest-cov = "^6.2.1"
 
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]
