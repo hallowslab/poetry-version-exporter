@@ -1,7 +1,7 @@
 import argparse
 from pathlib import Path
 from .exporter import export_version
-
+from ._version import __version__
 
 def main() -> None:
     parser = argparse.ArgumentParser(
@@ -23,8 +23,11 @@ def main() -> None:
         required=True,
         help="Path to write the _version.py file",
     )
+    parser.add_argument("-v", "--version", action="store_true", help="Print version")
     args = parser.parse_args()
 
+    if args.version:
+        print(f"poetry-version-exporter v{__version__}")
     try:
         version = export_version(args.name, args.pyproject, Path(args.output))
         print(f"Exported version {version} to {args.output}")
