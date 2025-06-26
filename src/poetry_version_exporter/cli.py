@@ -1,24 +1,33 @@
 import argparse
 from pathlib import Path
 from .exporter import export_version
-
+from ._version import __version__
 
 def main() -> None:
     parser = argparse.ArgumentParser(
         prog="poetry-version-exporter",
         description="Export version from pyproject.toml to _version.py",
     )
-    parser.add_argument("-n","--name", type=str, default="")
+    parser.add_argument("-n", "--name", type=str, default="")
     parser.add_argument(
-        "-p", "--pyproject", type=Path, default=Path("pyproject.toml"),
-        help="Path to pyproject.toml"
+        "-p",
+        "--pyproject",
+        type=Path,
+        default=Path("pyproject.toml"),
+        help="Path to pyproject.toml",
     )
     parser.add_argument(
-        "-o","--output", type=Path, required=True,
-        help="Path to write the _version.py file"
+        "-o",
+        "--output",
+        type=Path,
+        required=True,
+        help="Path to write the _version.py file",
     )
+    parser.add_argument("-v", "--version", action="store_true", help="Print version")
     args = parser.parse_args()
 
+    if args.version:
+        print(f"poetry-version-exporter v{__version__}")
     try:
         version = export_version(args.name, args.pyproject, Path(args.output))
         print(f"Exported version {version} to {args.output}")
