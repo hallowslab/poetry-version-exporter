@@ -8,14 +8,20 @@ def main() -> None:
         prog="poetry-version-exporter",
         description="Export version from pyproject.toml to _version.py",
     )
-    parser.add_argument("-n","--name", type=str, default="")
+    parser.add_argument("-n", "--name", type=str, default="")
     parser.add_argument(
-        "-p", "--pyproject", type=Path, default=Path("pyproject.toml"),
-        help="Path to pyproject.toml"
+        "-p",
+        "--pyproject",
+        type=Path,
+        default=Path("pyproject.toml"),
+        help="Path to pyproject.toml",
     )
     parser.add_argument(
-        "-o","--output", type=Path, required=True,
-        help="Path to write the _version.py file"
+        "-o",
+        "--output",
+        type=Path,
+        required=True,
+        help="Path to write the _version.py file",
     )
     args = parser.parse_args()
 

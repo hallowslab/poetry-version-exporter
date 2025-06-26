@@ -34,12 +34,13 @@ def export_version(
         with pyproject_path.open("rb") as f:
             pyproject = tomllib.load(f)
 
-        version = (
-            pyproject.get("tool", {}).get("poetry", {}).get("version") or
-            pyproject.get("project", {}).get("version")
-        )
+        version = pyproject.get("tool", {}).get("poetry", {}).get(
+            "version"
+        ) or pyproject.get("project", {}).get("version")
         if not version:
-            raise KeyError("Missing version in [tool.poetry] or [project] section of pyproject.toml")
+            raise KeyError(
+                "Missing version in [tool.poetry] or [project] section of pyproject.toml"
+            )
         print(f"Got version from pyproject.toml: {version}")
 
     # 3. Write the version to output
