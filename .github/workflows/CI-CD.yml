@@ -49,11 +49,13 @@ jobs:
         run: |
           poetry install
       - name: Update version
+        if: startsWith(github.ref, 'refs/tags/')
         run: |
           poetry run poetry-version-exporter --output src/poetry_version_exporter/_version.py
       - name: Build package
         run: poetry build
       - name: Upload artifact
+        if: startsWith(github.ref, 'refs/tags/')
         uses: actions/upload-artifact@v4
         with:
           name: dist
