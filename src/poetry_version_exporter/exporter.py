@@ -5,10 +5,7 @@ try:
 except ModuleNotFoundError:
     import tomli as tomllib
 
-try:
-    from importlib.metadata import version as get_version
-except ImportError:
-    from importlib_metadata import version as get_version  # for Python <3.8
+from importlib.metadata import version as get_version
 
 
 def export_version(
