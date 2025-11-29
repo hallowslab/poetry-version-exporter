@@ -4,3 +4,4 @@ dist/
 htmlcov/
 .pytest_cache
 .coverage
+.vscode

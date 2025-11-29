@@ -3,7 +3,7 @@ from pathlib import Path
 try:
     import tomllib  # Python 3.11+
 except ModuleNotFoundError:
-    import tomli as tomllib
+    import tomli as tomllib  # type: ignore[no-redef]
 
 from importlib.metadata import version as get_version
 

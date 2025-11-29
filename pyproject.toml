@@ -1,6 +1,6 @@
 [project]
 name = "poetry-version-exporter"
-version = "0.1.3"
+version = "0.1.4"
 description = ""
 authors = [
     {name = "hallowslab",email = "hallow.tech.lab@gmail.com"}
@@ -20,10 +20,16 @@ poetry-version-exporter = "poetry_version_exporter.cli:main"
 [tool.taskipy.tasks]
 export-version = "poetry run poetry-version-exporter --output src/poetry_version_exporter/_version.py"
 format = "black ."
-check = "mypy --strict ."
+check = "mypy --strict src"
 test = "pytest"
-post_test = "task format"
 cov = "pytest --cov=poetry_version_exporter --cov-report=term --cov-report=html"
+all = "task format && task check && task test && task cov"
+
+[tool.coverage.run]
+omit = [
+    # omit this single file anywhere
+    "*/_version.py",
+    ]
 
 [tool.poetry.group.dev.dependencies]
 black = [
