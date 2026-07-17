@@ -25,14 +25,14 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
 
-      - name: Install Poetry
-        run: pipx install poetry
+      - name: Install UV
+        run: pipx install uv
 
       - name: Install dependencies
-        run: poetry install --with dev
+        run: uv sync --group dev
 
       - name: Run tests
-        run: poetry run pytest --cov=poetry_version_exporter
+        run: uv run pytest --cov=poetry_version_exporter
 
   build:
     runs-on: ubuntu-latest
@@ -42,18 +42,18 @@ jobs:
       - uses: actions/setup-python@v6
         with:
           python-version: "3.11"
-      - name: Install poetry
+      - name: Install UV
         run: |
-          pipx install poetry
+          pipx install uv
       - name: Install dependencies
         run: |
-          poetry install
+          uv sync
       - name: Update version
         if: startsWith(github.ref, 'refs/tags/')
         run: |
-          poetry run poetry-version-exporter --output src/poetry_version_exporter/_version.py
+          uv run poetry-version-exporter --output src/poetry_version_exporter/_version.py
       - name: Build package
-        run: poetry build
+        run: uv build
       - name: Upload artifact
         if: startsWith(github.ref, 'refs/tags/')
         uses: actions/upload-artifact@v5
