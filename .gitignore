@@ -5,3 +5,5 @@ htmlcov/
 .pytest_cache
 .coverage
 .vscode
+*.egg-info/
+build/
