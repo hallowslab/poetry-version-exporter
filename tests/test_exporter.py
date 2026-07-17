@@ -1,8 +1,14 @@
 import textwrap
+from importlib.metadata import PackageNotFoundError
 from pathlib import Path
-import pytest
 from unittest.mock import patch
-from poetry_version_exporter.exporter import export_version
+
+import pytest
+
+from poetry_version_exporter.exporter import (
+    VersionSource,
+    export_version,
+)
 
 
 def test_export_from_pyproject(tmp_path: Path):
@@ -51,7 +57,7 @@ def test_export_missing_pyproject(tmp_path: Path):
     except FileNotFoundError as e:
         assert "missing_pyproject.toml does not exist" in str(e)
     else:
-        assert False, "Expected FileNotFoundError"
+        pytest.fail("Expected FileNotFoundError")
 
 
 def test_export_from_metadata(tmp_path: Path):
@@ -62,3 +68,57 @@ def test_export_from_metadata(tmp_path: Path):
         assert version == "9.9.9"
         assert output_path.exists()
         assert output_path.read_text(encoding="utf-8") == '__version__ = "9.9.9"\n'
+
+
+def test_export_from_pyproject_forced(tmp_path: Path):
+    pyproject_path = tmp_path / "pyproject.toml"
+    pyproject_path.write_text(
+        textwrap.dedent(
+            """
+            [project]
+            name = "demo-project"
+            version = "1.2.3"
+        """
+        ),
+        encoding="utf-8",
+    )
+    output_path = tmp_path / "_version.py"
+
+    version = export_version(
+        "demo-project",
+        pyproject_path=pyproject_path,
+        output_path=output_path,
+        source=VersionSource.PYPROJECT,
+    )
+    assert version == "1.2.3"
+
+
+def test_force_metadata_missing_package(tmp_path: Path):
+    output_path = tmp_path / "_version.py"
+
+    with (
+        patch(
+            "poetry_version_exporter.exporter.get_version",
+            side_effect=PackageNotFoundError("demo"),
+        ),
+        pytest.raises(PackageNotFoundError),
+    ):
+        export_version(
+            "demo",
+            tmp_path,
+            output_path=output_path,
+            source=VersionSource.METADATA,
+        )
+
+
+def test_force_pyproject_missing_file(tmp_path: Path):
+    output_path = tmp_path / "_version.py"
+    pyproject_path = tmp_path / "missing_pyproject.toml"
+
+    with pytest.raises(FileNotFoundError):
+        export_version(
+            "demo",
+            pyproject_path=pyproject_path,
+            output_path=output_path,
+            source=VersionSource.PYPROJECT,
+        )
