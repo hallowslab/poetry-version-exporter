@@ -113,6 +113,7 @@ version = export_version(
  package_name="mypackage",
  pyproject_path="pyproject.toml",
  output_path="mypackage/_version.py"
+ source="pyproject"
 )
 ```
 
