@@ -75,6 +75,23 @@ poetry-version-exporter --name mypackage -o mypackage/_version.py
 poetry-version-exporter --pyproject ./config/pyproject.toml -o src/_version.py
 ```
 
+### Forcing a version source
+
+By default the version is read from installed metadata first, then from
+`pyproject.toml`. Use `--source` to force one method; it fails if that
+method is unavailable.
+
+```sh
+# Force reading from installed package metadata
+poetry-version-exporter --source metadata -o _version.py
+
+# Force reading from pyproject.toml
+poetry-version-exporter --source pyproject -o _version.py
+
+# Default: metadata then pyproject (auto)
+poetry-version-exporter --source auto -o _version.py
+```
+
 ### Showing exporter version
 
 ```sh
