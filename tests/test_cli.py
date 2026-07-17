@@ -1,5 +1,7 @@
-import pytest
 from unittest.mock import patch
+
+import pytest
+
 from poetry_version_exporter.cli import main
 
 
@@ -29,3 +31,20 @@ def test_cli_runs_export(mock_export, capsys):
     captured = capsys.readouterr()
     mock_export.assert_called_once()
     assert "Exported version 1.2.3" in captured.out
+
+
+@patch("poetry_version_exporter.cli.export_version")
+def test_cli_passes_source(mock_export, capsys):
+    mock_export.return_value = "1.2.3"
+    import sys
+
+    sys.argv = [
+        "poetry-version-exporter",
+        "--output",
+        "dummy.py",
+        "--source",
+        "pyproject",
+    ]
+    main()
+    kwargs = mock_export.call_args.kwargs
+    assert kwargs["source"].value == "pyproject"
